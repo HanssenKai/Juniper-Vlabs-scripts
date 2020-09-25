@@ -49,6 +49,23 @@
 
   - name: Print configurations
     debug:
-      var: config_response
+      var: config_response.config_lines
+
+
+  - name: Configure login banner
+    juniper_junos_config:
+      user: "{{ USERNAME }}"
+      passwd: "{{ PASSWORD }}"
+      load: set
+      format: set
+      config_mode: exclusive
+      commit: true
+      lines:
+        - set system login message "\n\nHello World\n\n"
+    register: load_response
+
+  - name: print config difference
+    debug: 
+      var: load_response.diff_lines
 
       
