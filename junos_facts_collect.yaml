@@ -4,7 +4,7 @@
   roles: 
     - Juniper.junos 
   connection: local
-  gather_facts: no #Using ansible with junos simply issues rpc's, and the facts would therefore only apply to local machine
+  gather_facts: no #Using ansible with junos executes commands through netconf, so the facts would therefore only apply to local machine
 
   vars_prompt: 
   - name: USERNAME
