@@ -37,7 +37,18 @@
   # retrieve configuration
   - name: print rpc
     debug:
-      var: rpc_response ["parsed_output"] ["software-information"] ["junos-version"]
+      var: rpc_response["parsed_output"] ["software-information"] ["junos-version"]
 
+  - name: read services config
+    juniper_junos_config:
+      user: "{{ USERNAME }}"
+      passwd: "{{ PASSWORD }}"
+      retrieve: committed
+      filter: system/services
+    register: config_response
 
+  - name: Print configurations
+    debug:
+      var: config_response
 
+      
