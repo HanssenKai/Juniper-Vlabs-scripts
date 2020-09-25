@@ -1,0 +1,28 @@
+---
+- name: Fact collection playbook
+  hosts: all
+  roles: 
+    - Juniper.junos 
+  connection: local
+  gather_facts: no #Using ansible with junos simply issues rpc's, and the facts would therefore only apply to local machine
+
+  vars_prompt: 
+  - name: USERNAME
+    prompt: User name
+    private: no
+  - name: PASSWORD
+    prompt: Device passsword
+    private: yes #Don't show password in prompt 
+
+  tasks: 
+  - name: Get junos device information
+    juniper_junos_facts:
+      user: "{{ USERNAME }}"
+      passwd: "{{PASSWORD}}"
+    register: junos_facts
+
+  - name: Print information
+    debug: 
+      var: junos_facts
+
+
