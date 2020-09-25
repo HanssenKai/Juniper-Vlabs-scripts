@@ -23,6 +23,6 @@
 
   - name: Print information
     debug: 
-      var: junos_facts
+      var: junos_facts.facts.version
 
 
