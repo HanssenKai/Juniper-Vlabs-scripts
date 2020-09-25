@@ -15,6 +15,7 @@
     private: yes #Don't show password in prompt 
 
   tasks: 
+  # Retrieve some simple facts
   - name: Get junos device information
     juniper_junos_facts:
       user: "{{ USERNAME }}"
@@ -24,5 +25,19 @@
   - name: Print information
     debug: 
       var: junos_facts.facts.version
+
+  # Retrive information via rpc 
+  - name: retrieve services config
+    juniper_junos_rpc:
+      user: "{{ USERNAME }}"
+      passwd: "{{PASSWORD}}"
+      rpcs: get_software-information
+    register: rpc_response 
+
+  # retrieve configuration
+  - name: print rpc
+    debug:
+      var: rpc_response ["parsed_output"] ["software-information"] ["junos-version"]
+
 
 
