@@ -27,12 +27,27 @@ def print_interface_op_statuses(device):
             interface.findtext("oper-status").strip()
         ))
 
+def configure_device(device):
+    with Config(device, mode=("exclusive")) as conf:
+        print ("Disabling the interface...") 
+        conf.load("set interfaces ge-0/0/0 disable", format="set")
+        conf.pdiff() #print difference
+        conf.commit()
+        print("Commit complete, waiting...")
+        sleep(5)
+        print("Enabling interface...")
+        conf.load("delete interfaces ge-0/0/0 disable", format="set")
+        conf.pdiff()
+        conf.commit()
+        print("Finished")
 
 def main():
     # Hardcoded credentials just for lab ease
     with Device(host='66.129.235.12', port=45002, user='jcluser', passwd='Juniper!1') as dev:
-        print_interface_config(dev)
-        print_interface_op_statuses(dev)
+        # print_interface_config(dev)
+        # print_interface_op_statuses(dev)
+        configure_device(dev)
+
         
 
 
